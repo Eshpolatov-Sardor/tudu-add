@@ -126,6 +126,7 @@ export default defineComponent({
       </div>
     </div>
     <ol>
+      <li v-if="!newTudu.length" class="mt-24 border rounded-lg p-5 text-center text-xl">Malumot yuq add orqali yangi ma'lumot kiriting</li>
       <li
         v-for="(item, index) in newTudu"
         :key="index"
