@@ -1,3 +1,4 @@
+![{C213A138-29B7-41EE-BA54-31A905A5CB7F}](https://github.com/user-attachments/assets/0d174d21-4a61-44cd-b4a4-215c767bf0d6)
 # vuetypetodo
 
 This template should help get you started developing with Vue 3 in Vite.
