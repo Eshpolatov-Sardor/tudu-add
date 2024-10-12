@@ -3,6 +3,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "App",
+
   data() {
     return {
       showModal: false,
@@ -12,36 +13,50 @@ export default defineComponent({
       activeIndex: null as number | null,
     };
   },
+
   mounted() {
     this.todos = JSON.parse(localStorage.getItem("todos")) || [];
+
     this.fetchJokes();
   },
+
   methods: {
+
     submit() {
       if (this.text !== "" && this.text1 !== "") {
+
         const tuduList = {
           text: this.text,
           text1: this.text1,
         };
+
         this.newTudu.push(tuduList);
+
         localStorage.setItem("todos", JSON.stringify(this.newTudu));
+
         this.text = "";
         this.text1 = "";
+
         this.closeModal();
       }
     },
+
     AddTodo() {
       this.showModal = true;
     },
+
     closeModal() {
       this.showModal = false;
     },
+
     clear(index: number) {
       this.newTudu.splice(index, 1);
     },
+
     toggleActive(index: number) {
       this.activeIndex = this.activeIndex === index ? null : index;
     },
+
     async fetchJokes() {
       try {
         const response = await fetch('https://jsonplaceholder.typicode.com/users?_limit=5');
@@ -51,8 +66,8 @@ export default defineComponent({
           text: item.name,
           text1: item.email,
         }));
+
         this.newTudu = dataApi;
-        console.log(dataApi);
 
       } catch (error) {
         console.error(error);
