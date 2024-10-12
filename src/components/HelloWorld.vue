@@ -1,4 +1,4 @@
-<script lang="ts">
+<script  lang="ts">
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -10,28 +10,27 @@ export default defineComponent({
       newTudu: [],
       text: "" as string,
       text1: "" as string,
-      activeIndex: null as number | null,
+      active: Boolean,
     };
   },
 
   mounted() {
-    this.todos = JSON.parse(localStorage.getItem("todos")) || [];
+    const savedTodos = localStorage.getItem("todos");
+    this.newTudu = savedTodos ? JSON.parse(savedTodos) : [];
 
     this.fetchJokes();
   },
 
   methods: {
-
     submit() {
       if (this.text !== "" && this.text1 !== "") {
-
         const tuduList = {
           text: this.text,
           text1: this.text1,
+          active: false,
         };
 
         this.newTudu.push(tuduList);
-
         localStorage.setItem("todos", JSON.stringify(this.newTudu));
 
         this.text = "";
@@ -51,29 +50,31 @@ export default defineComponent({
 
     clear(index: number) {
       this.newTudu.splice(index, 1);
+      localStorage.setItem("todos", JSON.stringify(this.newTudu));
     },
 
     toggleActive(index: number) {
-      this.activeIndex = this.activeIndex === index ? null : index;
+      this.newTudu[index].active = !this.newTudu[index].active;
     },
 
     async fetchJokes() {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users?_limit=5');
+        const response = await fetch('https://fakestoreapiserver.reactbd.com/smart?_limit=5');
         const data = await response.json();
         const dataApi = data.map((item: any) => ({
           id: item.id,
-          text: item.name,
-          text1: item.email,
+          text: item.title,
+          text1: item.category,
+          active: false,
         }));
 
         this.newTudu = dataApi;
 
+
       } catch (error) {
         console.error(error);
       }
-    }
-
+    },
   },
 });
 </script>
@@ -128,12 +129,12 @@ export default defineComponent({
       <li
         v-for="(item, index) in newTudu"
         :key="index"
-        :class="{ active: activeIndex === index }"
+        :class="{ active: item.active }"
         class="border rounded-lg p-2 mt-3"
       >
         <span>
           <p class="text-2xl font-serif">{{ item.text }}</p>
-          <p class="">{{ item.text1 }}</p>
+          <p>{{ item.text1 }}</p>
         </span>
         <span class="flex justify-center items-center">
           <input class="mr-2" type="checkbox" @click="toggleActive(index)" />
